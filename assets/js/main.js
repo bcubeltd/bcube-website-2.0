@@ -264,3 +264,7 @@
   });
 
 })()
+
+// var dir_cpanel = "bcubelimited.com/";
+// var dir_local = "bcube-website-2.0/";
+// var bcube_dir = ".";
