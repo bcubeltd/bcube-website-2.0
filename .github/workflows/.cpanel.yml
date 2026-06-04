@@ -1,8 +1,8 @@
 name: Publish to Bcube cpanel
 on:
   push:
-      branches:
-           - main
+    branches:
+      - main
 jobs:
   web-deploy:
     name: 🎉 Deploy
@@ -10,14 +10,14 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+
+    - name: 📂 Deploy via SFTP
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.6
       with:
         server: ${{ secrets.BCUBEWEBSITE_FTP_SERVER }}
         username: ${{ secrets.BCUBEWEBSITE_FTPSERVER_USER }}
         password: ${{ secrets.BCUBEWEBSITE_FTPSERVER_PASS }}
-        server-dir: /home/bcubelimited/public_html/bcubelimited.com/
-        protocol: ftps
-        port: 21
-        security: loose
+        port: 22
+        local_path: './*'
+        remote_path: '/home/bcubelimited/public_html/bcubelimited.com'
+        sftp_only: true
