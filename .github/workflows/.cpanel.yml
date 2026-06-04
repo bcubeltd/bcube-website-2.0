@@ -11,13 +11,12 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
-    - name: 📂 Deploy via SFTP
-      uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.BCUBEWEBSITE_FTP_SERVER }}
         username: ${{ secrets.BCUBEWEBSITE_FTPSERVER_USER }}
         password: ${{ secrets.BCUBEWEBSITE_FTPSERVER_PASS }}
-        port: 22
-        local_path: './*'
-        remote_path: '/home/bcubelimited/public_html/bcubelimited.com'
-        sftp_only: true
+        protocol: ftp
+        port: 21
+        timeout: 30000
