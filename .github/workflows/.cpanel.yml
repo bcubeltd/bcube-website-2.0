@@ -26,6 +26,7 @@ jobs:
           set net:timeout 15;
           set net:max-retries 2;
           set net:reconnect-interval-base 5;
+          set ftp:ignore-pasv-address yes;
           open -u \"$FTP_USER\",\"$FTP_PASS\" \"$FTP_SERVER\";
           mirror --reverse --verbose --exclude .git/ --exclude .github/ ./ ./;
         "
