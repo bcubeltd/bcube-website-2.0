@@ -22,11 +22,14 @@ jobs:
           set ftp:ssl-allow no;
           set ftp:passive-mode on;
           set ftp:prefer-epsv no;
-          set ftp:use-mlsd off;
-          set net:timeout 15;
-          set net:max-retries 2;
-          set net:reconnect-interval-base 5;
           set ftp:ignore-pasv-address yes;
+          set ftp:use-mlsd off;
+          set mirror:use-pget-n 1;
+          set mirror:parallel-transfer-count 1;
+          set net:connection-limit 1;
+          set net:timeout 30;
+          set net:max-retries 3;
+          set net:reconnect-interval-base 5;
           open -u \"$FTP_USER\",\"$FTP_PASS\" \"$FTP_SERVER\";
           mirror --reverse --verbose --exclude .git/ --exclude .github/ ./ ./;
         "
