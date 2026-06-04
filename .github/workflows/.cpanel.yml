@@ -17,6 +17,6 @@ jobs:
         server: ${{ secrets.BCUBEWEBSITE_FTP_SERVER }}
         username: ${{ secrets.BCUBEWEBSITE_FTPSERVER_USER }}
         password: ${{ secrets.BCUBEWEBSITE_FTPSERVER_PASS }}
-        protocol: ftp
+        protocol: ftps
         port: 21
         security: loose
