@@ -11,13 +11,25 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
-    - name: 📂 Deploy via SFTP
-      uses: wlixcc/SFTP-Deploy-Action@v1.2.6
-      with:
-        server: ${{ secrets.BCUBEWEBSITE_FTP_SERVER }}
-        username: ${{ secrets.BCUBEWEBSITE_FTPSERVER_USER }}
-        password: ${{ secrets.BCUBEWEBSITE_FTPSERVER_PASS }}
-        port: 22
-        local_path: './*'
-        remote_path: '/home/bcubelimited/public_html/bcubelimited.com'
-        sftp_only: true
+    - name: 📂 Deploy via lftp
+      env:
+        FTP_SERVER: ${{ secrets.BCUBEWEBSITE_FTP_SERVER }}
+        FTP_USER:   ${{ secrets.BCUBEWEBSITE_FTPSERVER_USER }}
+        FTP_PASS:   ${{ secrets.BCUBEWEBSITE_FTPSERVER_PASS }}
+      run: |
+        sudo apt-get update -qq && sudo apt-get install -y lftp
+        lftp -c "
+          set ftp:ssl-allow no;
+          set ftp:passive-mode on;
+          set ftp:prefer-epsv no;
+          set ftp:ignore-pasv-address yes;
+          set ftp:use-mlsd off;
+          set mirror:use-pget-n 1;
+          set mirror:parallel-transfer-count 1;
+          set net:connection-limit 1;
+          set net:timeout 30;
+          set net:max-retries 3;
+          set net:reconnect-interval-base 5;
+          open -u \"$FTP_USER\",\"$FTP_PASS\" \"$FTP_SERVER\";
+          mirror --reverse --verbose --exclude .git/ --exclude .github/ ./ ./;
+        "
